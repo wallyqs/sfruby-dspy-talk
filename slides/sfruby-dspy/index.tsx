@@ -149,13 +149,12 @@ const LetsTalkRuby: Page = () => (
         flex: 1,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         marginTop: 32,
         marginBottom: 28,
         minHeight: 0,
       }}
     >
-      {/* @slide-comment id="c-3a5820da" ts="2026-05-17T09:45:26.099Z" text="eyJub3RlIjoibGV0cyAgYWxpZ24gdG8gdGhlIGxlZnQgaW5zdGVhZCBvZiBjZW50ZXJpbmcifQ" */}
       <img
         src={miniGitRuby}
         alt=""
@@ -163,6 +162,7 @@ const LetsTalkRuby: Page = () => (
           width: '100%',
           height: '100%',
           objectFit: 'contain',
+          objectPosition: 'left center',
           borderRadius: 'var(--osd-radius)',
           boxShadow: '0 24px 80px rgba(0, 0, 0, 0.45)',
         }}
@@ -171,9 +171,8 @@ const LetsTalkRuby: Page = () => (
 
     <a
       href="https://dev.to/mame/which-programming-language-is-best-for-claude-code-508a"
-      style={{ fontSize: '41px', color: 'var(--osd-accent)', textDecoration: 'none', letterSpacing: '0.02em', alignSelf: 'center', textAlign: 'center' }}
-    >
-      {/* @slide-comment id="c-2f5c0cdf" ts="2026-05-17T09:45:44.166Z" text="eyJub3RlIjoibGV0cyBhbGlnbiB0byB0aGUgbGVmdCBhcyB3ZWxsIn0" */}dev.to/mame/which-programming-language-is-best-for-claude-code</a>
+      style={{ fontSize: '41px', color: 'var(--osd-accent)', textDecoration: 'none', letterSpacing: '0.02em', alignSelf: 'flex-start', textAlign: 'left' }}
+    >dev.to/mame/which-programming-language-is-best-for-claude-code</a>
   </div>
 );
 
