@@ -404,6 +404,30 @@ const FoxesDspy: Page = () => (
       flexDirection: 'column',
     }}
   >
+    <style>{`
+      @keyframes osd-foxes-page-turn {
+        0%   {
+          opacity: 0;
+          transform: rotateY(105deg);
+          filter: brightness(0.35) saturate(0.6);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        30%  {
+          opacity: 1;
+          filter: brightness(0.55) saturate(0.75);
+        }
+        70%  {
+          filter: brightness(0.9) saturate(0.95);
+          box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+        }
+        100% {
+          opacity: 1;
+          transform: rotateY(0deg);
+          filter: brightness(1) saturate(1);
+          box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+        }
+      }
+    `}</style>
     <h2
       style={{
         fontFamily: 'var(--osd-font-display)',
@@ -419,7 +443,16 @@ const FoxesDspy: Page = () => (
     </h2>
 
     <div
-      style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', marginTop: 48, minHeight: 0, lineHeight: '1.3' }}
+      style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginTop: 48,
+        minHeight: 0,
+        lineHeight: '1.3',
+        perspective: '2200px',
+      }}
     >
       <img
         src={foxesDspy}
@@ -433,6 +466,9 @@ const FoxesDspy: Page = () => (
           padding: 32,
           borderRadius: 'var(--osd-radius)',
           boxShadow: '0 24px 80px rgba(0, 0, 0, 0.45)',
+          transformOrigin: 'left center',
+          backfaceVisibility: 'hidden',
+          animation: 'osd-foxes-page-turn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both',
         }}
       />
     </div>
@@ -998,69 +1034,141 @@ const WhyDspy: Page = () => (
   </div>
 );
 
-const ProblemWithPrompting: Page = () => (
-  <div
-    style={{
-      width: '100%',
-      height: '100%',
-      background: 'var(--osd-bg)',
-      color: 'var(--osd-text)',
-      fontFamily: 'var(--osd-font-body)',
-      padding: '96px 120px',
-      display: 'flex',
-      flexDirection: 'column',
-    }}
-  >
-    <h2
+const ProblemWithPrompting: Page = () => {
+  const Row = ({
+    problem,
+    answer,
+    delay,
+  }: {
+    problem: string;
+    answer: React.ReactNode;
+    delay: number;
+  }) => (
+    <>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 24,
+          animation: `osd-row-fade-in 0.5s ease-out ${delay}s both`,
+        }}
+      >
+        <span
+          style={{
+            display: 'inline-block',
+            width: 14,
+            height: 14,
+            borderRadius: 999,
+            background: 'var(--osd-accent)',
+            flexShrink: 0,
+          }}
+        />
+        <span style={{ fontSize: 44, fontWeight: 700, lineHeight: 1.2 }}>{problem}</span>
+      </div>
+      <div
+        style={{
+          fontSize: 44,
+          color: muted,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          letterSpacing: '-0.05em',
+          animation: `osd-row-fade-in 0.5s ease-out ${delay}s both`,
+        }}
+      >
+        ──▶
+      </div>
+      <span
+        style={{
+          fontSize: 44,
+          fontWeight: 700,
+          color: 'var(--osd-accent)',
+          lineHeight: 1.2,
+          letterSpacing: '-0.01em',
+          display: 'flex',
+          alignItems: 'center',
+          animation: `osd-row-fade-in 0.5s ease-out ${delay}s both`,
+        }}
+      >
+        {answer}
+      </span>
+    </>
+  );
+
+  return (
+    <div
       style={{
-        fontFamily: 'var(--osd-font-display)',
-        fontSize: 72,
-        fontWeight: 900,
-        letterSpacing: '-0.03em',
-        lineHeight: 1.05,
-        margin: 0,
+        width: '100%',
+        height: '100%',
+        background: 'var(--osd-bg)',
+        color: 'var(--osd-text)',
+        fontFamily: 'var(--osd-font-body)',
+        padding: '96px 120px',
         display: 'flex',
-        alignItems: 'center',
-        gap: 32,
+        flexDirection: 'column',
       }}
     >
-      <img
-        src={dspyPuzzle}
-        alt=""
-        style={{ height: 90, width: 90, objectFit: 'contain', flexShrink: 0 }}
-      />
-      <span>
-        What is the problem with{' '}
-        <span style={{ color: 'var(--osd-accent)' }}>prompting</span>?
-      </span>
-    </h2>
+      <style>{`
+        @keyframes osd-row-fade-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
+      <h2
+        style={{
+          fontFamily: 'var(--osd-font-display)',
+          fontSize: 72,
+          fontWeight: 900,
+          letterSpacing: '-0.03em',
+          lineHeight: 1.05,
+          margin: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 32,
+        }}
+      >
+        <img
+          src={dspyPuzzle}
+          alt=""
+          style={{ height: 90, width: 90, objectFit: 'contain', flexShrink: 0 }}
+        />
+        <span>
+          What is the problem with{' '}
+          <span style={{ color: 'var(--osd-accent)' }}>prompting</span>?
+        </span>
+      </h2>
 
-    <div
-      style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 32, marginTop: 48, fontWeight: '600', letterSpacing: '0.5px', lineHeight: '1.55', fontSize: '46px' }}
-    >
-      <Fact style={{ fontSize: '69px' }}>
-        <span style={{ fontWeight: 700 }}>Brittle prompt strings</span>
-        <span style={{ color: muted }}> — one tweak silently breaks the chain</span>
-      </Fact>
-      <Fact>
-        <span style={{ fontWeight: 700 }}>Manual prompt engineering</span>
-        <span style={{ color: muted }}> — vibes-driven, not systematic</span>
-      </Fact>
-      <Fact>
-        <span style={{ fontWeight: 700 }}>Unstructured outputs</span>
-        <span style={{ color: muted }}> — regex + hope</span>
-      </Fact>
-      <Fact>
-        <span style={{ fontWeight: 700 }}>Model lock-in</span>
-        <span style={{ color: muted }}> — prompts tuned per model, don&rsquo;t transfer</span>
-      </Fact>
-      <Fact>
-        <span style={{ fontWeight: 700 }}>No feedback loop</span>
-        <span style={{ color: muted }}> — can&rsquo;t measure, can&rsquo;t improve</span>
-      </Fact>
+      <div
+        style={{
+          flex: 1,
+          marginTop: 56,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) 80px minmax(0, 1fr)',
+          columnGap: 40,
+          rowGap: 32,
+          alignContent: 'center',
+        }}
+      >
+        <Row
+          problem="Brittle prompt strings"
+          answer={
+            <span
+              style={{
+                fontFamily: '"JetBrains Mono", "Fira Code", ui-monospace, monospace',
+              }}
+            >
+              DSPy::Signature
+            </span>
+          }
+          delay={0.4}
+        />
+        <Row problem="Manual prompt engineering" answer="Optimizers" delay={1.0} />
+        <Row problem="Model lock-in" answer="Prompts port across models" delay={1.6} />
+        <Row problem="New model, re-tune everything" answer="Optimizer adapts prompts automatically" delay={2.2} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const DspyFeatures: Page = () => {
   const Module = ({ name, desc, fade }: { name: string; desc: string; fade?: boolean }) => (
