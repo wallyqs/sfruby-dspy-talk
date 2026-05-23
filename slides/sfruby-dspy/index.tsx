@@ -24,6 +24,9 @@ export const design: DesignSystem = {
 
 const muted = '#8a8a92';
 
+// Flip to `true` while exporting to PDF; `false` restores animated reveals.
+const ANIMATIONS_DISABLED_FOR_EXPORT = false;
+
 const dspyPredictSource = `require 'dspy'
 
 DSPy.configure do |c|
@@ -468,7 +471,7 @@ const FoxesDspy: Page = () => (
           boxShadow: '0 24px 80px rgba(0, 0, 0, 0.45)',
           transformOrigin: 'left center',
           backfaceVisibility: 'hidden',
-          animation: 'osd-foxes-page-turn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both',
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : 'osd-foxes-page-turn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both',
         }}
       />
     </div>
@@ -637,8 +640,8 @@ const DspyAcronym: Page = () => (
       <span
         style={{
           display: 'inline-block',
-          opacity: 0,
-          animation: 'osd-acronym-reveal 0.55s ease-out 0.4s forwards',
+          opacity: ANIMATIONS_DISABLED_FOR_EXPORT ? 1 : 0,
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : 'osd-acronym-reveal 0.55s ease-out 0.4s forwards',
         }}
       >
         <span style={{ color: 'var(--osd-accent)' }}>D</span>eclarative
@@ -646,8 +649,8 @@ const DspyAcronym: Page = () => (
       <span
         style={{
           display: 'inline-block',
-          opacity: 0,
-          animation: 'osd-acronym-reveal 0.55s ease-out 1.2s forwards',
+          opacity: ANIMATIONS_DISABLED_FOR_EXPORT ? 1 : 0,
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : 'osd-acronym-reveal 0.55s ease-out 1.2s forwards',
         }}
       >
         <span style={{ color: 'var(--osd-accent)' }}>S</span>elf-improving
@@ -655,8 +658,8 @@ const DspyAcronym: Page = () => (
       <span
         style={{
           display: 'inline-block',
-          opacity: 0,
-          animation: 'osd-acronym-reveal 0.55s ease-out 2.0s forwards',
+          opacity: ANIMATIONS_DISABLED_FOR_EXPORT ? 1 : 0,
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : 'osd-acronym-reveal 0.55s ease-out 2.0s forwards',
         }}
       >
         <span style={{ color: 'var(--osd-accent)' }}>Py</span>thon
@@ -870,8 +873,8 @@ const DspyRb100: Page = () => (
             objectFit: 'contain',
             borderRadius: 'var(--osd-radius)',
             boxShadow: '0 24px 80px rgba(0, 0, 0, 0.45)',
-            opacity: 0,
-            animation: 'osd-rubyllm-reveal 0.55s ease-out 0.4s forwards',
+            opacity: ANIMATIONS_DISABLED_FOR_EXPORT ? 1 : 0,
+            animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : 'osd-rubyllm-reveal 0.55s ease-out 0.4s forwards',
           }}
         />
         <div
@@ -881,8 +884,8 @@ const DspyRb100: Page = () => (
             fontWeight: 700,
             letterSpacing: '-0.01em',
             lineHeight: '1.7',
-            opacity: 0,
-            animation: 'osd-rubyllm-reveal 0.55s ease-out 1.2s forwards',
+            opacity: ANIMATIONS_DISABLED_FOR_EXPORT ? 1 : 0,
+            animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : 'osd-rubyllm-reveal 0.55s ease-out 1.2s forwards',
           }}
         >
           <span style={{ color: 'var(--osd-accent)' }}>I</span>ncluded
@@ -1050,7 +1053,7 @@ const ProblemWithPrompting: Page = () => {
           display: 'flex',
           alignItems: 'center',
           gap: 24,
-          animation: `osd-row-fade-in 0.5s ease-out ${delay}s both`,
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : `osd-row-fade-in 0.5s ease-out ${delay}s both`,
         }}
       >
         <span
@@ -1073,7 +1076,7 @@ const ProblemWithPrompting: Page = () => {
           alignItems: 'center',
           justifyContent: 'center',
           letterSpacing: '-0.05em',
-          animation: `osd-row-fade-in 0.5s ease-out ${delay}s both`,
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : `osd-row-fade-in 0.5s ease-out ${delay}s both`,
         }}
       >
         ──▶
@@ -1087,7 +1090,7 @@ const ProblemWithPrompting: Page = () => {
           letterSpacing: '-0.01em',
           display: 'flex',
           alignItems: 'center',
-          animation: `osd-row-fade-in 0.5s ease-out ${delay}s both`,
+          animation: ANIMATIONS_DISABLED_FOR_EXPORT ? undefined : `osd-row-fade-in 0.5s ease-out ${delay}s both`,
         }}
       >
         {answer}
@@ -1177,7 +1180,7 @@ const DspyFeatures: Page = () => {
         display: 'flex',
         alignItems: 'baseline',
         gap: 32,
-        animation: fade ? 'osd-feature-fade 0.9s ease-out 2.5s forwards' : undefined,
+        animation: fade && !ANIMATIONS_DISABLED_FOR_EXPORT ? 'osd-feature-fade 0.9s ease-out 2.5s forwards' : undefined,
       }}
     >
       <span
@@ -1259,9 +1262,6 @@ const DspyFeatures: Page = () => {
         <Module name="Predict" desc="Single-step LLM call with typed I/O" />
         <Module name="ChainOfThought" desc="Step-by-step reasoning, baked in" />
         <Module name="ReAct" desc="Reasoning + tool-use loop" />
-        <Module name="ProgramOfThought" desc="Code-as-reasoning, run + observe" fade />
-        <Module name="Refine" desc="Retry with self-critique" fade />
-        <Module name="MultiChainComparison" desc="Sample many paths, pick the best" fade />
       </div>
     </div>
   );
@@ -1274,7 +1274,7 @@ const DspyOptimizers: Page = () => {
         display: 'flex',
         alignItems: 'baseline',
         gap: 28,
-        animation: fade ? 'osd-opt-fade 0.9s ease-out 2.5s forwards' : undefined,
+        animation: fade && !ANIMATIONS_DISABLED_FOR_EXPORT ? 'osd-opt-fade 0.9s ease-out 2.5s forwards' : undefined,
       }}
     >
       <span
@@ -1375,9 +1375,7 @@ const DspyOptimizers: Page = () => {
           gap: 36,
         }}
       >
-        <Opt name="BootstrapFewShot" desc="Auto-mine few-shot demos from your data" fade />
         <Opt name="MIPROv2" desc="Bayesian search over instructions + demos" fade />
-        <Opt name="COPRO" desc="Coordinate ascent over candidate prompts" fade />
         <Opt name="BootstrapFinetune" desc="Compile your program to a fine-tuned model" fade />
         <Opt name="GEPA" desc="Reflective prompt evolution — LLM critiques and mutates its own prompts" highlight />
       </div>
@@ -1994,52 +1992,140 @@ const Demo: Page = () => (
   </div>
 );
 
-const Thanks: Page = () => (
-  <div
-    style={{
-      width: '100%',
-      height: '100%',
-      background: 'var(--osd-bg)',
-      color: 'var(--osd-text)',
-      fontFamily: 'var(--osd-font-body)',
-      padding: '160px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-    }}
-  >
-    <h2
-      style={{
-        fontFamily: 'var(--osd-font-display)',
-        fontSize: 'var(--osd-size-hero)',
-        fontWeight: 900,
-        letterSpacing: '-0.04em',
-        lineHeight: 1.0,
-        margin: 0,
-      }}
-    >
-      Thanks<span style={{ color: 'var(--osd-accent)' }}>!</span>
-    </h2>
-
-    <div style={{ display: 'flex', alignItems: 'baseline', gap: 32, marginTop: 56 }}>
-      <a
-        href="https://twitter.com/wallyqs"
+const Thanks: Page = () => {
+  const Section = ({
+    label,
+    links,
+  }: {
+    label: string;
+    links: { href: string; text: string; note?: string }[];
+  }) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <span
         style={{
           fontFamily: '"JetBrains Mono", "Fira Code", ui-monospace, monospace',
-          fontSize: 56,
+          fontSize: 24,
           fontWeight: 600,
-          color: 'var(--osd-accent)',
-          textDecoration: 'none',
-          letterSpacing: '0.01em',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: muted,
         }}
       >
-        @wallyqs
-      </a>
-      <span style={{ fontSize: 32, color: muted, letterSpacing: '0.04em' }}>{''}</span>
+        {label}
+      </span>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {links.map(({ href, text, note }) => (
+          <div key={href} style={{ display: 'flex', alignItems: 'baseline', gap: 18 }}>
+            <span
+              style={{
+                display: 'inline-block',
+                width: 11,
+                height: 11,
+                borderRadius: 999,
+                background: 'var(--osd-accent)',
+                flexShrink: 0,
+                transform: 'translateY(-3px)',
+              }}
+            />
+            <a
+              href={href}
+              style={{
+                fontSize: 34,
+                color: 'var(--osd-accent)',
+                textDecoration: 'none',
+                letterSpacing: '0.01em',
+                lineHeight: 1.25,
+              }}
+            >
+              {text}
+            </a>
+            {note ? (
+              <span style={{ fontSize: 24, color: muted, letterSpacing: '0.01em' }}>{note}</span>
+            ) : null}
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        background: 'var(--osd-bg)',
+        color: 'var(--osd-text)',
+        fontFamily: 'var(--osd-font-body)',
+        padding: '120px',
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, 0.85fr) minmax(0, 1fr)',
+        columnGap: 96,
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <h2
+          style={{
+            fontFamily: 'var(--osd-font-display)',
+            fontSize: 'var(--osd-size-hero)',
+            fontWeight: 900,
+            letterSpacing: '-0.04em',
+            lineHeight: 1.0,
+            margin: 0,
+          }}
+        >
+          Thanks<span style={{ color: 'var(--osd-accent)' }}>!</span>
+        </h2>
+
+        <a
+          href="https://twitter.com/wallyqs"
+          style={{
+            fontFamily: '"JetBrains Mono", "Fira Code", ui-monospace, monospace',
+            fontSize: 52,
+            fontWeight: 600,
+            color: 'var(--osd-accent)',
+            textDecoration: 'none',
+            letterSpacing: '0.01em',
+            marginTop: 48,
+          }}
+        >
+          @wallyqs
+        </a>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+        <Section
+          label="DSPy.rb"
+          links={[
+            { href: 'https://github.com/vicentereig/dspy.rb', text: 'github.com/vicentereig/dspy.rb' },
+            {
+              href: 'https://github.com/vicentereig/dspy.rb/tree/main/examples',
+              text: 'github.com/vicentereig/dspy.rb/tree/main/examples',
+            },
+            { href: 'https://oss.vicente.services/dspy.rb', text: 'oss.vicente.services/dspy.rb' },
+          ]}
+        />
+        <Section
+          label="DSPy"
+          links={[
+            { href: 'https://dspy.ai', text: 'dspy.ai' },
+            { href: 'https://github.com/stanfordnlp/dspy', text: 'github.com/stanfordnlp/dspy' },
+            { href: 'https://arxiv.org/abs/2310.03714', text: 'arxiv.org/abs/2310.03714', note: 'paper' },
+          ]}
+        />
+        <Section
+          label="Reading"
+          links={[
+            {
+              href: 'https://www.dbreunig.com/2025/06/10/let-the-model-write-the-prompt.html',
+              text: 'dbreunig.com — Let the model write the prompt',
+            },
+          ]}
+        />
+      </div>
+    </div>
+  );
+};
 
 export const meta: SlideMeta = { title: 'Building Agents with DSPy in Ruby', theme: 'corporate' };
 
